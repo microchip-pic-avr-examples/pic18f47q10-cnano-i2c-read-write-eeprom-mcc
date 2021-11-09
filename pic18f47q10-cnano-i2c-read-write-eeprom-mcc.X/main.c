@@ -38,6 +38,7 @@ const i2c_host_interface_t *I2C = &i2c1_host_interface;
 uint8_t dataWrite[TEST_SET_SIZE];
 uint8_t dataRead[TEST_SET_SIZE];
 uint8_t EEPROMMemoryRegister = 0x00;
+uint8_t dataOperationSuccessful = 0;
 
 int main(void)
 {
