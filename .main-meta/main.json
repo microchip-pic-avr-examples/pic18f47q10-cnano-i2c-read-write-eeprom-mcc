@@ -27,7 +27,7 @@
             "semverRange": ">=5.0.3"
         },
         "device": {
-            "metaDataVersion": "1.0.0",
+            "metaDataVersion": "1.0.1",
             "category": "com.microchip.portal.contentRef",
             "content": {
                 "metaDataVersion": "1.0.0",
