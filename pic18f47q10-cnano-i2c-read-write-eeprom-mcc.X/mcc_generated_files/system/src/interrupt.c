@@ -1,28 +1,17 @@
 /**
-  Generated Interrupt Manager Source File
-
-  @Company:
-    Microchip Technology Inc.
-
-  @File Name:
-    interrupt.c
-
-  @Summary:
-    This is the Interrupt Manager file generated
-
-  @Description:
-    This header file provides implementations for global interrupt handling.
-    For individual peripheral handlers please see the peripheral driver for
-    all modules selected in the GUI.
-    Generation Information :
-        Driver Version    :  2.03
-    The generated drivers are tested against the following:
-        Compiler          :  XC8 v2.2 or later
-        MPLAB 	          :  MPLABX v5.45
+ * Interrupt Manager Generated Driver File
+ *
+ * @file interrupt.c
+ * 
+ * @ingroup interrupt 
+ * 
+ * @brief This file contains the API implementation for the Interrupt Manager driver.
+ * 
+ * @version Interrupt Manager Driver Version 2.0.5
 */
 
 /*
-© [2021] Microchip Technology Inc. and its subsidiaries.
+© [2023] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -44,6 +33,7 @@
 
 #include "../../system/interrupt.h"
 #include "../../system/system.h"
+#include "../pins.h"
 
 void (*INT0_InterruptHandler)(void);
 void (*INT1_InterruptHandler)(void);
@@ -51,13 +41,26 @@ void (*INT2_InterruptHandler)(void);
 
 void  INTERRUPT_Initialize (void)
 {
-    // // Disable Interrupt Priority Vectors (16CXXX Compatibility Mode)
-    INTCONbits.IPEN = 0;
+    // Enable Interrupt Priority Vectors (16CXXX Compatibility Mode)
+    INTCONbits.IPEN = 1;
+
+    // Assign peripheral interrupt priority vectors
+
+    // IOCI - high priority
+    IPR0bits.IOCIP = 1;
+
+    // BCLI - high priority
+    IPR3bits.BCL1IP = 1;
+
+    // SSPI - high priority
+    IPR3bits.SSP1IP = 1;
+
+
 
     // Clear the interrupt flag
     // Set the external interrupt edge detect
     EXT_INT0_InterruptFlagClear();   
-    EXT_INT0_risingEdgeSet();
+    EXT_INT0_risingEdgeSet();    
     // Set Default Interrupt Handler
     INT0_SetInterruptHandler(INT0_DefaultInterruptHandler);
     // EXT_INT0_InterruptEnable();
@@ -65,7 +68,7 @@ void  INTERRUPT_Initialize (void)
     // Clear the interrupt flag
     // Set the external interrupt edge detect
     EXT_INT1_InterruptFlagClear();   
-    EXT_INT1_risingEdgeSet();
+    EXT_INT1_risingEdgeSet();    
     // Set Default Interrupt Handler
     INT1_SetInterruptHandler(INT1_DefaultInterruptHandler);
     // EXT_INT1_InterruptEnable();
@@ -73,11 +76,39 @@ void  INTERRUPT_Initialize (void)
     // Clear the interrupt flag
     // Set the external interrupt edge detect
     EXT_INT2_InterruptFlagClear();   
-    EXT_INT2_risingEdgeSet();
+    EXT_INT2_risingEdgeSet();    
     // Set Default Interrupt Handler
     INT2_SetInterruptHandler(INT2_DefaultInterruptHandler);
     // EXT_INT2_InterruptEnable();
 
+}
+
+/**
+ * @ingroup interrupt
+ * @brief Services the Interrupt Service Routines (ISR) of high-priority enabled interrupts and is called every time a high-priority interrupt is triggered.
+ * @pre Interrupt Manager is initialized.
+ * @param None.
+ * @return None.
+ */
+void __interrupt() INTERRUPT_InterruptManagerHigh (void)
+{
+    // interrupt handler
+    if(PIE0bits.IOCIE == 1 && PIR0bits.IOCIF == 1)
+    {
+        PIN_MANAGER_IOC();
+    }
+    else if(PIE3bits.BCL1IE == 1 && PIR3bits.BCL1IF == 1)
+    {
+        I2C1_ERROR_ISR();
+    }
+    else if(PIE3bits.SSP1IE == 1 && PIR3bits.SSP1IF == 1)
+    {
+        I2C1_ISR();
+    }
+    else
+    {
+        //Unhandled Interrupt
+    }
 }
 
 
@@ -159,6 +190,7 @@ void INT2_DefaultInterruptHandler(void){
     // add your INT2 interrupt custom code
     // or set custom function using INT2_SetInterruptHandler()
 }
+
 /**
  End of File
 */

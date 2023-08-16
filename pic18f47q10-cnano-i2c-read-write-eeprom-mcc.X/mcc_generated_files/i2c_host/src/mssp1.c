@@ -3,15 +3,15 @@
  *
  * @file mssp1.c
  *
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  *
  * @brief This file contains the driver code for I2C1 module.
  *
- * @version I2C1 Driver Version 2.0.0
+ * @version I2C1 Driver Version 2.1.1
  */
 
 /*
-© [2021] Microchip Technology Inc. and its subsidiaries.
+© [2023] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -57,6 +57,8 @@ static bool I2C1_IsNack(void);
 static bool I2C1_IsData(void);
 static bool I2C1_IsAddr(void);
 static bool I2C1_IsRxBufFull(void);
+static inline void I2C1_InterruptsEnable(void);
+static inline void I2C1_InterruptsDisable(void);
 static inline void I2C1_InterruptClear(void);
 static inline void I2C1_ErrorInterruptClear(void);
 static inline void I2C1_StatusFlagsClear(void);
@@ -74,7 +76,7 @@ static i2c_host_event_states_t I2C1_EVENT_RESET(void);
 /*
   Section: Driver Interface
  */
-const i2c_host_interface_t i2c1_host_interface = {
+const i2c_host_interface_t I2C1_Host = {
     .Initialize = I2C1_Initialize,
     .Deinitialize = I2C1_Deinitialize,
     .Write = I2C1_Write,
@@ -84,7 +86,7 @@ const i2c_host_interface_t i2c1_host_interface = {
     .ErrorGet = I2C1_ErrorGet,
     .IsBusy = I2C1_IsBusy,
     .CallbackRegister = I2C1_CallbackRegister,
-    .Tasks = I2C1_Tasks
+    .Tasks = NULL
 };
 
 /*
@@ -113,7 +115,7 @@ void I2C1_Initialize(void)
 {
     /* CKE disabled; SMP Standard Speed;  */
     SSP1STAT = 0x80;
-    /* SSPM FOSC/4_SSPxADD_I2C; CKP disabled; SSPEN disabled;  */
+    /* SSPM FOSC/4_SSPxADD_I2C; CKP disabled; SSPEN disabled; SSPOV no_overflow; WCOL no_collision;  */
     SSP1CON1 = 0x8;
     /* SEN disabled; RSEN disabled; PEN disabled; RCEN disabled; ACKEN disabled; ACKDT acknowledge; GCEN disabled;  */
     SSP1CON2 = 0x0;
@@ -121,6 +123,7 @@ void I2C1_Initialize(void)
     SSP1CON3 = 0x0;
     /* SSPADD 9;  */
     SSP1ADD = 0x9;
+    I2C1_InterruptsEnable();
     I2C1_CallbackRegister(I2C1_DefaultCallback);
     SSP1CON1bits.SSPEN = 1;
 }
@@ -132,6 +135,7 @@ void I2C1_Deinitialize(void)
     SSP1CON2 = 0x00;
     SSP1CON3 = 0x00;
     SSP1ADD = 0x00;
+    I2C1_InterruptsDisable();
     I2C1_CallbackRegister(I2C1_DefaultCallback);
 }
 
@@ -212,23 +216,14 @@ void I2C1_CallbackRegister(void (*callbackHandler)(void))
     }
 }
 
-void I2C1_Tasks(void)
+void I2C1_ISR()
 {
-    if (PIR3bits.BCL1IF)
-    {
-        I2C1_ErrorEventHandler();
-    }
-    if (PIR3bits.SSP1IF)
-    {
-        if (PIR3bits.BCL1IF)
-        {
-            I2C1_ErrorEventHandler();
-        }
-        else
-        {
-            I2C1_EventHandler();
-        }
-    }
+    I2C1_EventHandler();
+}
+
+void I2C1_ERROR_ISR()
+{
+    I2C1_ErrorEventHandler();
 }
 
 /*
@@ -467,6 +462,18 @@ static bool I2C1_IsAddr(void)
 static bool I2C1_IsRxBufFull(void)
 {
     return SSP1STATbits.BF;
+}
+
+static inline void I2C1_InterruptsEnable(void)
+{
+    PIE3bits.SSP1IE = 1;
+    PIE3bits.BCL1IE = 1;
+}
+
+static inline void I2C1_InterruptsDisable(void)
+{
+    PIE3bits.SSP1IE = 0;
+    PIE3bits.BCL1IE = 0;
 }
 
 static inline void I2C1_InterruptClear(void)

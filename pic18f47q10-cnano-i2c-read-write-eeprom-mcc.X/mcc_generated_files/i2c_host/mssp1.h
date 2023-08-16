@@ -3,15 +3,15 @@
  *
  * @file mssp1.h
  *
- * @defgroup i2c1_host I2C1_HOST
+ * @defgroup mssp1_host MSSP1_HOST
  *
  * @brief This file contains API prototypes and other data types for I2C1 module.
  *
- * @version I2C1 Driver Version 2.0.0
+ * @version I2C1 Driver Version 2.1.1
  */
 
 /*
-© [2021] Microchip Technology Inc. and its subsidiaries.
+© [2023] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -47,37 +47,47 @@
 /**
  Section: Data Type Definitions
  */
+#define i2c1_host_host_interface I2C1_Host
+
+
+#define I2C1_Host_Initialize I2C1_Initialize
+#define I2C1_Host_Deinitialize I2C1_Deinitialize
+#define I2C1_Host_Write I2C1_Write
+#define I2C1_Host_Read I2C1_Read
+#define I2C1_Host_WriteRead I2C1_WriteRead
+#define I2C1_Host_ErrorGet I2C1_ErrorGet
+#define I2C1_Host_CallbackRegister I2C1_CallbackRegister
+#define I2C1_Host_IsBusy I2C1_IsBusy
+
 
 /**
- * @ingroup i2c1_host
- * @brief External object for i2c1_host_interface.
+ * @ingroup i2c_host
+ * @brief External object for I2C1_Host.
  */
-extern const i2c_host_interface_t i2c1_host_interface;
+extern const i2c_host_interface_t I2C1_Host;
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief This API initializes the I2C1 driver.
  *        This routine initializes the I2C1 module.
  *        This routine must be called before any other I2C1 routine is called.
  *        This routine should only be called once during system initialization.
  * @param void
  * @return void
- * @ref i2c1_host_example_code
  */
 void I2C1_Initialize(void);
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief This API Deinitializes the I2C1 driver.
  *        This routine disables the I2C1 module.
  * @param void
  * @return void
- * @ref i2c1_host_example_code
  */
 void I2C1_Deinitialize(void);
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief This function writes data to a Client on the bus.
  *        The function will attempt to write length number of bytes from data
  *        buffer to a Client whose address is specified by address.
@@ -104,12 +114,11 @@ void I2C1_Deinitialize(void);
  *                 initiated.
  *         false - The request fails,if there was already a transfer in
  *                 progress when this function was called
- * @ref i2c1_host_example_code
  */
 bool I2C1_Write(uint16_t address, uint8_t *data, size_t dataLength);
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief This function reads the data from a Client on the bus.
  *        The function will attempt to read length number of bytes into data
  *        buffer from a Client whose address is specified as address. 
@@ -136,12 +145,11 @@ bool I2C1_Write(uint16_t address, uint8_t *data, size_t dataLength);
  *                 initiated.
  *         false - The request fails,if there was already a transfer in
  *                 progress when this function was called
- * @ref i2c1_host_example_code
  */
 bool I2C1_Read(uint16_t address, uint8_t *data, size_t dataLength);
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief This function writes data from the writeData to the bus 
  *        and then reads data from the Client and stores the received in the
  *        readData. The function generates a Start condition on the bus and 
@@ -173,35 +181,32 @@ bool I2C1_Read(uint16_t address, uint8_t *data, size_t dataLength);
  *                 initiated.
  *         false - The request fails,if there was already a transfer in
  *                 progress when this function was called
- * @ref i2c1_host_example_code
  */
 bool I2C1_WriteRead(uint16_t address, uint8_t *writeData, size_t writeLength, uint8_t *readData, size_t readLength);
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief This function get the error occurred during I2C Transmit and Receive.
  *        
  * @param void
  * @return I2C_ERROR_NONE - No Error
  *         I2C_ERROR_NACK - Client returned NACK
  *         I2C_ERROR_BUS_COLLISION - Bus Collision Error
- * @ref i2c1_host_example_code
  */
 i2c_host_error_t I2C1_ErrorGet(void);
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief This API checks if I2C is busy.
  *        I2C must be initialized with @ref I2C1_Initialize() 
  *        before calling this API.
  * @param void
  * @return true - if I2C is busy; false - if I2C is free
- * @ref i2c1_host_example_code
  */
 bool I2C1_IsBusy(void);
 
 /**
- * @ingroup i2c1_host
+ * @ingroup i2c_host
  * @brief Setter function for I2C interrupt callback, This will be called when any error is generated
  * @param CallbackHandler - Pointer to custom Callback.
  * @return void
@@ -228,149 +233,20 @@ bool I2C1_IsBusy(void);
 void I2C1_CallbackRegister(void (*callbackHandler)(void));
 
 /**
- * @ingroup i2c1_host
- * @brief This is polling function for non interrupt mode
+ * @ingroup i2c_host
+ * @brief This function is ISR function for I2C1 Common interrupts
  * @param void
  * @return void
- * @ref i2c1_host_example_code
  */
-void I2C1_Tasks(void);
- 
+void I2C1_ISR(void);
+
 /**
- * @ingroup i2c1_host
- * @example i2c1_host_example_code
- * @brief In this I2C Host example, a byte of data is written in to EEPROM and read it back. 
- *        Case 1: Data 0xAA is written in to EEPROM at location 0x0010 and read the same back, using I2C1_Write() and I2C1_WriteRead() functions.
- *        Case 2: Data 0x55 is written in to EEPROM at location 0x0020 and read the same back using I2C1_Write() and I2C1_Read() functions.
- * @code
- * 
- * void main(void)
- * {
- *     uint8_t transmitData[10];
- *     uint8_t writeLength;
- *     uint8_t readLength;
- *     uint8_t writeData;
- *     uint8_t readData;
- *     uint8_t eepromAddr = 0x50; // 7-bit EEPROM address
- *     uint8_t waitCounter;
- *
- *     // Initializes Clock, Pins, Interrupts and I2C host
- *     SYSTEM_Initialize(); 
- *
- *    // Case 1:
- *    transmitData[0] = 0x00;  // load MSB of EEPROM location
- *    transmitData[1] = 0x10;  // load LSB of EEPROM location
- *    transmitData[2] = 0xAA;  // load data
- *    writeLength = 3; // 2 bytes of location address + 1 byte data
- *
- *    if ( I2C1_Write(eepromAddr, transmitData, writeLength))
- *    {
- *        waitCounter = 100; // This value depends on the system clock, I2C clock and data length.
- *        while ( I2C1_IsBusy() && waitCounter)
- *        {
- *            I2C1_Tasks();
- *            waitCounter--;
- *        }
- *
- *        if (  I2C1_ErrorGet() == I2C_ERROR_NONE)
- *        {
- *            // Write operation is successful
- *        }
- *        else
- *        {
- *            // Error handling
- *        }
- *    }
- *
- *    writeLength = 2; // 2 bytes of location address
- *    readLength = 1; // 1 byte read
- *    if (I2C1_WriteRead(eepromAddr, transmitData, writeLength, readData , readLength))
- *    {
- *        waitCounter = 100; // This value depends on the system clock, I2C clock and data length.
- *        while ( I2C1_IsBusy() && waitCounter)
- *        {
- *            I2C1_Tasks();
- *            waitCounter--;
- *        }
- *
- *        if (  I2C1_ErrorGet() == I2C_ERROR_NONE)
- *        {
- *            // WriteRead operation is successful
- *        }
- *        else
- *        {
- *            // Error handling
- *        }
- *    }
- *
- *    // Case 2:
- *    transmitData[0] = 0x00;  // load MSB of EEPROM location
- *    transmitData[1] = 0x20;  // load LSB of EEPROM location
- *    transmitData[2] = 0x55;  // load data
- *    writeLength = 3; // 2 bytes of location address + 1 byte data
- *    if (I2C1_Write(eepromAddr, transmitData, writeLength))
- *    {
- *        waitCounter = 100; // This value depends on the system clock, I2C clock and data length.
- *        while ( I2C1_IsBusy() && waitCounter)
- *        {
- *            I2C1_Tasks();
- *            waitCounter--;
- *        }
- *
- *        if ( I2C1_ErrorGet() == I2C_ERROR_NONE)
- *        {
- *            // Write operation is successful
- *        }
- *        else
- *        {
- *            // Error handling
- *        }
- *    }
- *
- *    writeLength = 2; // 2 bytes of location address
- *    if (I2C1_Write(eepromAddr, transmitData, writeLength))
- *    {
- *        waitCounter = 100; // This value depends on the system clock, I2C clock and data length.
- *        while ( I2C1_IsBusy() && waitCounter)
- *        {
- *            I2C1_Tasks();
- *            waitCounter--;
- *        }
- *
- *        if ( I2C1_ErrorGet() == I2C_ERROR_NONE)
- *        {
- *            // Write operation is successful
- *        }
- *        else
- *        {
- *            // Error handling
- *        }
- *    }
- *
- *    readLength = 1; // 1 byte read
- *    if (I2C1_Read(eepromAddr, readData, readLength))
- *    {
- *        waitCounter = 100; // This value depends on the system clock, I2C clock and data length.
- *        while ( I2C1_IsBusy() && waitCounter)
- *        {
- *            I2C1_Tasks();
- *            waitCounter--;
- *        }
- *
- *        if ( I2C1_ErrorGet() == I2C_ERROR_NONE)
- *        {
- *            // Read operation is successful
- *        }
- *        else
- *        {
- *            // Error handling
- *        }
- *    }
- *
- *     while (1)
- *     {
- *     }
- * }
- * @endcode
-*/
+ * @ingroup i2c_host
+ * @brief This function is ISR function for I2C1 Error interrupts
+ * @param void
+ * @return void
+ */
+void I2C1_ERROR_ISR(void);
+
+ 
 #endif //MSSP1_H

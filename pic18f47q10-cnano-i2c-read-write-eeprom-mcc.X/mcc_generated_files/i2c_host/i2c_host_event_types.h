@@ -7,11 +7,11 @@
  *
  * @brief This file contains other data types for I2C module.
  *
- * @version I2C Driver Version 2.0.0
+ * @version I2C Driver Version 2.1.0
  */
 
 /*
-© [2021] Microchip Technology Inc. and its subsidiaries.
+© [2023] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 

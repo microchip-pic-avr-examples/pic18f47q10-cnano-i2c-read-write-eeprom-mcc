@@ -1,26 +1,17 @@
 /**
-  @Generated CCL Source File
-
-  @Company:
-    Microchip Technology Inc.
-
-  @File Name:
-    config_bits.c
-
-  @Summary:
-    This is the config_bits.c file generated using CCL
-
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
-    Generation Information : 
-        Driver Version    :  2.00
-    The generated drivers are tested against the following:
-        Compiler          :  XC8 v2.20
-        MPLAB             :  MPLAB X 5.40
+ * CONFIGURATION BITS Generated Driver Source File
+ * 
+ * @file config_bits.c
+ * 
+ * @ingroup config_bitsdriver
+ * 
+ * @brief This is the generated Device Configuration bits file.
+ *
+ * @version Driver Version 2.0.1
 */
 
 /*
-© [2021] Microchip Technology Inc. and its subsidiaries.
+© [2023] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -106,3 +97,6 @@
 //CONFIG6H
 #pragma config EBTRB = OFF     // Boot Block Table Read Protection->Boot Block (000000-0007FFh) not protected from table reads executed in other blocks
 
+/**
+ End of File
+*/

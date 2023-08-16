@@ -1,17 +1,14 @@
-<!-- Please do not change this logo with link -->
-
 [![MCHP](images/microchip.png)](https://www.microchip.com)
 
-# PIC18F47Q10 I2C Host Read & Write EEPROM
+## I2C Host Read & Write EEPROM using PIC18F47Q10 with MCC Melody
 
-## Objective
 This repository contains an example of a MCC-melody configured project for I2C as described in [TB3281 - Getting Started with I2C Using MSSP on PIC18](http://ww1.microchip.com/downloads/en/Appnotes/Getting_Started_With_I2C_Using_MSSP_on%20PIC18_90003281A.pdf) document from Microchip. <!-- This link has to be updated, once the tech brief goes live! -->
 
 The PIC18F47Q10 configured in I2C Host Mode using the MSSP1 peripheral and performing read and write operations. This example will use the client [24LC02B](https://ww1.microchip.com/downloads/en/devicedoc/21709c.pdf), 2K I2C™ Serial EEPROM, addressed in 7-bit mode.
 
 ## Related Documentation
 
-- [TB3281 - Getting Started with I2C Using MSSP on PIC18](http://ww1.microchip.com/downloads/en/Appnotes/Getting_Started_With_I2C_Using_MSSP_on%20PIC18_90003281A.pdf) <!-- This link has to be updated, once the tech brief goes live! -->
+- [TB3281 - Getting Started with I2C Using MSSP on PIC18](https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ApplicationNotes/ApplicationNotes/Getting-Started-With-I2C-Using-MSSP-on-PIC18-90003281.pdf)
 - [PIC18-Q10 Product Family Page](https://www.microchip.com/design-centers/8-bit/pic-mcus/device-selection/pic18f-q10-product-family)
 - [PIC18F47Q10 Data Sheet](http://ww1.microchip.com/downloads/en/DeviceDoc/40002043D.pdf)
 - [24LC02B - 2K I2C™ Serial EEPROM](https://ww1.microchip.com/downloads/en/devicedoc/21709c.pdf)
@@ -19,64 +16,88 @@ The PIC18F47Q10 configured in I2C Host Mode using the MSSP1 peripheral and perfo
 
 ## Software Used
 
-- MPLAB® X IDE 5.50.0 or newer [(MPLAB® X IDE 5.50)](https://www.microchip.com/en-us/development-tools-tools-and-software/mplab-x-ide?utm_source=GitHub&utm_medium=TextLink&utm_campaign=MCU8_MMTCha_MPAE_Examples&utm_content=pic18f47q10-cnano-i2c-write-dac-mcc-github)
-- MPLAB® XC8 2.32.0 or newer compiler [(MPLAB® XC8 2.32)](https://www.microchip.com/en-us/development-tools-tools-and-software/mplab-xc-compilers?utm_source=GitHub&utm_medium=TextLink&utm_campaign=MCU8_MMTCha_MPAE_Examples&utm_content=pic18f47q10-cnano-i2c-write-dac-mcc-github)
-- MPLAB® Code Configurator (MCC Melody) 5.0.3 or newer [(microchip.com/mplab/mplab-code-configurator)](https://www.microchip.com/mplab/mplab-code-configurator)
-- MPLAB® Code Configurator (MCC) Device Libraries PIC10 / PIC12 / PIC16 / PIC18 MCUs 1.84.5 or newer [(microchip.com/mplab/mplab-code-configurator)](https://www.microchip.com/mplab/mplab-code-configurator)
-- Microchip PIC18F-Q Series Device Support 1.12.193 or newer [(packs.download.microchip.com/)](https://packs.download.microchip.com/)
-- MSSP1 driver 6.0.0 or newer
-
+- [MPLAB® X IDE v6.10 or newer](http://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC8 2.41 or newer](http://www.microchip.com/mplab/compilers)
+- [MPLAB® Code Configurator Melody](https://www.microchip.com/en-us/tools-resources/configure/mplab-code-configurator/melody)
+- [PIC18F-Q_DFP Device Family Pack v1.20.405 or newer](https://packs.download.microchip.com/)
 
 ## Hardware Used
 
-- Curiosity Nano Base for Click Boards™ [(AC164162)](https://www.microchip.com/Developmenttools/ProductDetails/AC164162)
-- PIC18F47Q10 Curiosity Nano [(DM182029)](https://www.microchip.com/Developmenttools/ProductDetails/DM182029)
-- PICkit™ Serial I2C™ Demo Board [(PKSERIAL-I2C1)](https://www.microchip.com/DevelopmentTools/ProductDetails/PKSERIAL-I2C1)
-
-## Setup
-
-The PIC18F47Q10 Curiosity Nano Development Board is used as the test platform.
+- PIC18F56Q71 Curiosity Nano Development Board is used as a test platform.
 
 <br><img src="images/PIC18F47Q10_CNANO.png" width="600">
 
-The following configurations will be made for this project:
-- Clock
-	- Oscillator Select: HFINTOSC
-	- HF Internal Clock: 4 MHz
-	- Clock Divider: 1
-- MSSP1
-	- Serial Protocol: I2C
-    - Mode: Host
-    - I2C Clock Frequency: 100000
-- Watchdog Timer: disabled
-- Low-voltage Programming: disabled
-
-|Pin           | Configuration      |
-| :----------: | :----------------: |
-|RB1 (SCL1)    | With Pull Up       |
-|RB2 (SDA1)    | With Pull Up       |
-
-The pull ups are enabled since the PICkit™ Serial I2C™ Demo Board comes without onboard pull up resistors.
-
-The following connections has to be made:  
-<br><img src="images/wiring_diagram.png" width="700">
+- PICkit™ Serial I2C™ Demo Board [(PKSERIAL-I2C1)](https://www.microchip.com/DevelopmentTools/ProductDetails/PKSERIAL-I2C1)
 
 ## Operation
 
-1. Connect the board to the PC.
+To program the Curiosity Nano board with this MPLAB® X project, follow the steps provided in the [How to Program the Curiosity Nano Board](#how-to-program-the-curiosity-nano-board) chapter.
 
-2. Open the *pic18f47q10-cnano-i2c-read-write-eeprom-mcc.X* project in MPLAB® X IDE.
+## Setup
 
-3. Configure the project properties:
-    - Right click on the project and click *Properties*
-    - Select the device pack in the *Packs* tab
-    - Select the *PIC18F47Q10 Curiosity Nano* (click on the SN) in the *Hardware Tool* tab
-    - Select the compiler version in the *Compiler Toolchain* tab
-    - Click *OK* to save the changes
-    
-<br><img src="images/properties.png" width="600">
+- **Clock Control:**
+  - Clock Source: HFINTOSC
+  - HF Internal Clock: 4 MHz
+  - Clock Divider: 1
 
-4. Program the project to the board: right click on the project and click *Make and Program Device*
+- **I2C Host:**
+  - I2C Host PLIB Selector: MSSP1
+  - Requested Speed: 100 kHz
+
+- **UART:**
+  - UART PLIB Selector: EUSART2
+  - Redirect `printf` to UART: Enabled
+
+- **Configuration Bits:**
+  - WDT Operating Mode: Disabled
+  - Low Voltage Programming Enable: Enabled
+
+| Pin        | Configuration        |
+| :--------: | :------------------: |
+| RB1 (SCL1) | Weak Pull-up Enabled |
+| RB2 (SDA1) | Weak Pull-up Enabled |
+| RD0 (TX)   | Digital Output       |
+
+The pull ups are enabled since the PICkit™ Serial I2C™ Demo Board comes without onboard pull-up resistors.
+
+The following connections have to be made:
+<br><img src="images/wiring_diagram.png" width="700">
+
 ## Summary
 
 This project is an illustration for a basic use case for writing and reading to and from an EEPROM using MSSP1 and MCC Meldoy.
+
+## How to Program the Curiosity Nano board
+
+This chapter shows how to use the MPLAB X IDE to program an PIC® device with an Example_Project.X. This can be applied for any other projects. 
+
+- Connect the board to the PC.
+
+- Open the Example_Project.X project in MPLAB X IDE.
+
+- Set the Example_Project.X project as main project.
+
+  - Right click on the project in the **Projects** tab and click **Set as Main Project**.
+    <br><img src="images/set_main_project.png" width="500">
+
+- Clean and build the Example_Project.X project.
+
+  - Right click on the **Example_Project.X** project and select **Clean and Build**.
+    <br><img src="images/clean_build.png" width="500">
+
+- Select the **PICxxxxx Curiosity Nano** in the Connected Hardware Tool section of the project settings:
+
+  - Right click on the project and click **Properties**
+  - Click on the arrow under the Connected Hardware Tool
+  - Select the **PICxxxxx Curiosity Nano** (click on the **SN**), click **Apply** and then click **OK**:
+    <br><img src="images/device.png" width="500">
+
+- Program the project to the board.
+  - Right click on the project and click **Make and Program Device**.
+    <br><img src="images/make_program.png" width="500">
+
+<br>
+
+- [Back to Setup](#setup)
+- [Back to Summary](#summary)
+- [Back to Top](#i2c-host-read--write-eeprom-using-pic18f47q10-with-mcc-melody)
