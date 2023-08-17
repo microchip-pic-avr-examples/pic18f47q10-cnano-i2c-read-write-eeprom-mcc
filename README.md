@@ -2,9 +2,9 @@
 
 ## I2C Host Read & Write EEPROM using PIC18F47Q10 with MCC Melody
 
-This repository contains an example of a MCC-melody configured project for I2C as described in [TB3281 - Getting Started with I2C Using MSSP on PIC18](http://ww1.microchip.com/downloads/en/Appnotes/Getting_Started_With_I2C_Using_MSSP_on%20PIC18_90003281A.pdf) document from Microchip. <!-- This link has to be updated, once the tech brief goes live! -->
+This repository contains an example of a MCC-melody configured project for I2C as described in [TB3281 - Getting Started with I2C Using MSSP on PIC18](https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ApplicationNotes/ApplicationNotes/Getting-Started-With-I2C-Using-MSSP-on-PIC18-90003281.pdf) document from Microchip.
 
-The PIC18F47Q10 configured in I2C Host Mode using the MSSP1 peripheral and performing read and write operations. This example will use the client [24LC02B](https://ww1.microchip.com/downloads/en/devicedoc/21709c.pdf), 2K I2C™ Serial EEPROM, addressed in 7-bit mode.
+The PIC18F47Q10 configured in I2C Host mode using the MSSP1 peripheral and performing read and write operations. This example will use the client [24LC02B](https://ww1.microchip.com/downloads/en/devicedoc/21709c.pdf), 2K I2C™ Serial EEPROM, addressed in 7-bit mode.
 
 ## Related Documentation
 
@@ -23,7 +23,7 @@ The PIC18F47Q10 configured in I2C Host Mode using the MSSP1 peripheral and perfo
 
 ## Hardware Used
 
-- PIC18F56Q71 Curiosity Nano Development Board is used as a test platform.
+- PIC18F56Q71 Curiosity Nano Development board is used as a test platform.
 
 <br><img src="images/PIC18F47Q10_CNANO.png" width="600">
 
@@ -69,7 +69,7 @@ This project is an illustration for a basic use case for writing and reading to 
 
 ## How to Program the Curiosity Nano board
 
-This chapter shows how to use the MPLAB X IDE to program an PIC® device with an Example_Project.X. This can be applied for any other projects. 
+This chapter shows how to use the MPLAB X IDE to program an PIC® device with an Example_Project.X. This can be applied for any other projects.
 
 - Connect the board to the PC.
 
